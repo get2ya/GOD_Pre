@@ -13,6 +13,8 @@ document.addEventListener('DOMContentLoaded', function() {
     let displacementSprite = null;
 
     // Pixi.js 초기화
+    let lastWidth = window.innerWidth; // 리사이즈 방어용 변수
+
     async function initPixiRipple() {
         if (!pixiContainer || !heroImage || typeof PIXI === 'undefined') {
             console.error("Pixi.js 로드 실패 또는 컨테이너 없음");
@@ -21,12 +23,16 @@ document.addEventListener('DOMContentLoaded', function() {
 
         const containerRect = pixiContainer.parentElement.getBoundingClientRect();
 
+        // [최적화] 모바일 해상도 제한 (최대 2배까지만)
+        // 카톡/인앱 브라우저 버벅임 방지
+        const pixelRatio = Math.min(window.devicePixelRatio || 1, 2);
+
         // Pixi Application 생성
         pixiApp = new PIXI.Application({
             width: containerRect.width,
             height: containerRect.height,
             backgroundAlpha: 0,
-            resolution: window.devicePixelRatio || 1,
+            resolution: pixelRatio,
             autoDensity: true,
         });
 
@@ -81,12 +87,22 @@ document.addEventListener('DOMContentLoaded', function() {
 
         backgroundSprite.filters = [displacementFilter];
 
-        // 리사이즈 대응
+        // [최적화] 리사이즈 이벤트 방어 코드 (카톡 인앱 브라우저 튕김 방지)
+        // 가로 폭이 변할 때만 리사이즈, 세로만 변할 때(주소창 움직임)는 무시
         window.addEventListener('resize', () => {
-            const rect = pixiContainer.parentElement.getBoundingClientRect();
-            pixiApp.renderer.resize(rect.width, rect.height);
-            fitBackground();
-            displacementSprite.position.set(pixiApp.screen.width / 2, pixiApp.screen.height / 2);
+            if (window.innerWidth === lastWidth) return; // 가로 폭 변경 없으면 무시
+
+            lastWidth = window.innerWidth;
+
+            const parent = pixiContainer.parentElement;
+            if (parent && pixiApp) {
+                const rect = parent.getBoundingClientRect();
+                pixiApp.renderer.resize(rect.width, rect.height);
+                fitBackground();
+                if (displacementSprite) {
+                    displacementSprite.position.set(rect.width / 2, rect.height / 2);
+                }
+            }
         });
 
         // 기존 이미지 숨기고 Pixi 캔버스 보이기

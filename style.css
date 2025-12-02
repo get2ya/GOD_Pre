@@ -270,10 +270,12 @@ body {
     border: 3px solid rgba(255, 107, 0, 0.9);
     border-radius: 50%;
     transform: translate(-50%, -50%) scale(0);
+    transform-origin: center center; /* 카톡 인앱 브라우저 호환성 */
     z-index: -1;
     opacity: 0;
     box-shadow: 0 0 30px rgba(255, 107, 0, 0.5), inset 0 0 30px rgba(255, 107, 0, 0.3);
     animation: energyPulse 3s ease-out 2.8s forwards;
+    will-change: transform, opacity; /* 하드웨어 가속 */
 }
 
 .energy-wave.delay-1 {
@@ -569,6 +571,7 @@ body {
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
+    transform-origin: center center; /* 카톡 인앱 브라우저 호환성 */
     width: 50px;
     height: 50px;
     border: 3px solid rgba(255, 107, 0, 0.8);
@@ -578,6 +581,7 @@ body {
         0 0 20px rgba(255, 107, 0, 0.6),
         0 0 40px rgba(255, 170, 0, 0.4),
         inset 0 0 20px rgba(255, 107, 0, 0.3);
+    will-change: transform, opacity; /* 하드웨어 가속 */
 }
 
 .ring-1 {
