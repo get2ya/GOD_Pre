@@ -35,6 +35,7 @@ body {
     scroll-snap-stop: always;
     min-height: 100vh;
     position: relative;
+    will-change: transform;
 }
 
 .main-section {
