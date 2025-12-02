@@ -1481,8 +1481,8 @@ body {
         0 15px 50px rgba(3, 199, 90, 0.7),
         0 0 60px rgba(3, 199, 90, 0.5),
         0 0 120px rgba(3, 199, 90, 0.3);
-    /* 호버 시 더 빠른 맥동 (transform 제거하여 마그네틱 효과와 충돌 방지) */
-    animation: btnBreathingFast 0.8s ease-in-out infinite;
+    /* 호버 시 맥동 - 로고보다 약간 느리게 (체감상 동일) */
+    animation: btnBreathingFast 1.5s ease-in-out infinite;
 }
 
 /* 호버 시 빠른 맥동 효과 (transform 제거) */
