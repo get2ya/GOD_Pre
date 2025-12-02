@@ -21,11 +21,15 @@ document.addEventListener('DOMContentLoaded', function() {
             return;
         }
 
+        // [추가] GPU 메모리 절약을 위한 정밀도 조정 (아이폰 메모리 부족 방지)
+        PIXI.settings.PRECISION_FRAGMENT = PIXI.PRECISION.MEDIUM;
+
         const containerRect = pixiContainer.parentElement.getBoundingClientRect();
 
-        // [최적화] 모바일 해상도 제한 (최대 2배까지만)
-        // 카톡/인앱 브라우저 버벅임 방지
-        const pixelRatio = Math.min(window.devicePixelRatio || 1, 2);
+        // [최적화] 모바일 해상도 제한 (최대 1.5배까지만)
+        // 아이폰 14 Pro (DPR 3) 등에서 메모리 폭발 방지
+        // 2배 → 1.5배로 낮춤 (눈으로 구분 불가, 메모리 대폭 절약)
+        const pixelRatio = Math.min(window.devicePixelRatio || 1, 1.5);
 
         // Pixi Application 생성
         pixiApp = new PIXI.Application({
@@ -34,6 +38,7 @@ document.addEventListener('DOMContentLoaded', function() {
             backgroundAlpha: 0,
             resolution: pixelRatio,
             autoDensity: true,
+            powerPreference: 'high-performance', // 배터리 절약 모드 대신 고성능 모드 요청
         });
 
         pixiContainer.appendChild(pixiApp.view);
