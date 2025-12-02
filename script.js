@@ -64,8 +64,8 @@ document.addEventListener('DOMContentLoaded', function() {
         const displacementCanvas = createDisplacementMap(512);
         const displacementTexture = PIXI.Texture.from(displacementCanvas);
 
-        // 텍스처 래핑 모드 설정 (가장자리가 자연스럽게)
-        displacementTexture.baseTexture.wrapMode = PIXI.WRAP_MODES.REPEAT;
+        // 텍스처 래핑 모드 설정 (CLAMP: 한 지점에서만 동심원 퍼짐, REPEAT 시 바둑판 현상)
+        displacementTexture.baseTexture.wrapMode = PIXI.WRAP_MODES.CLAMP;
 
         displacementSprite = new PIXI.Sprite(displacementTexture);
         displacementSprite.anchor.set(0.5);
