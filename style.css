@@ -1141,7 +1141,9 @@ body {
     max-width: 900px;
     width: 128%;
     height: auto;
-    filter: drop-shadow(0 5px 20px rgba(255, 200, 100, 0.4));
+    filter: drop-shadow(0 0 20px rgba(0, 0, 0, 0.6))
+            drop-shadow(0 0 40px rgba(0, 0, 0, 0.4))
+            drop-shadow(0 5px 20px rgba(255, 200, 100, 0.4));
     position: relative;
     z-index: 2;
 }
@@ -1255,7 +1257,7 @@ body {
 }
 
 .logo-container {
-    margin-top: 10px;
+    margin-top: -95px;
     margin-bottom: 0;
     opacity: 0;
     animation: communityFadeIn 0.8s ease-out 0.6s forwards;
@@ -1765,14 +1767,23 @@ body {
 
     /* 모바일 슬로건 조정 */
     .slogan-container {
-        margin-top: 90px;
-        margin-bottom: 10px;
-        margin-left: -140px;
+        margin-top: 50px;
+        margin-bottom: 5px;
+        margin-left: -47px;
+        z-index: 10;
     }
 
     .slogan-image {
         max-width: none;
-        width: 105%;
+        width: 80%;
+        filter: drop-shadow(0 0 15px rgba(0, 0, 0, 0.7))
+                drop-shadow(0 0 30px rgba(0, 0, 0, 0.5))
+                drop-shadow(0 3px 15px rgba(255, 200, 100, 0.4));
+    }
+
+    .logo-container {
+        margin-top: -10%;
+        z-index: 20;
     }
 
     .slogan-sparkle {
