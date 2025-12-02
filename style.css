@@ -1343,42 +1343,6 @@ body {
     z-index: 1;
 }
 
-.main-footer {
-    background: #000000;
-    border-top: 1px solid rgba(255, 107, 0, 0.2);
-    padding: 40px 20px;
-    text-align: center;
-}
-
-.footer-content {
-    max-width: 1200px;
-    margin: 0 auto;
-}
-
-.copyright {
-    color: rgba(255, 255, 255, 0.5);
-    margin-bottom: 15px;
-    font-size: 0.9rem;
-}
-
-.footer-links {
-    display: flex;
-    justify-content: center;
-    gap: 30px;
-    flex-wrap: wrap;
-}
-
-.footer-links a {
-    color: rgba(255, 255, 255, 0.6);
-    text-decoration: none;
-    font-size: 0.9rem;
-    transition: color 0.3s ease;
-}
-
-.footer-links a:hover {
-    color: #ff6b00;
-}
-
 @media (max-width: 768px) {
     /* 모바일용 섹션2 배경 이미지 (용량 절감) */
     .community-section {
