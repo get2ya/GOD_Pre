@@ -1387,6 +1387,45 @@ body {
             url('resource/background2_m.jpg') center center / cover no-repeat;
     }
 
+    /* ========== [테스트] 모바일 성능 최적화 - CSS 맥동 효과 비활성화 ========== */
+    /* WebGL(Pixi) + CSS Shadow 애니메이션 충돌로 인한 메모리 문제 테스트 */
+
+    /* 섹션1 로고 글로우 맥동 비활성화 */
+    .reveal-logo {
+        animation: logoReveal 1.5s cubic-bezier(0.16, 1, 0.3, 1) forwards !important;
+        filter: drop-shadow(0 0 30px rgba(255, 107, 0, 0.5)) !important;
+    }
+
+    /* 섹션2 로고 글로우 맥동 비활성화 */
+    .game-logo {
+        animation: none !important;
+        filter: drop-shadow(0 10px 30px rgba(255, 107, 0, 0.5)) !important;
+    }
+
+    /* 버튼 호버 시 로고 글로우 변경도 비활성화 */
+    .game-logo.glow-fast {
+        animation: none !important;
+        filter: drop-shadow(0 10px 30px rgba(3, 199, 90, 0.6)) !important;
+    }
+
+    /* 동심원 링 애니메이션 비활성화 (개별 링 포함) */
+    .ring,
+    .ring-1,
+    .ring-2,
+    .ring-3,
+    .ring-4,
+    .ring-5 {
+        animation: none !important;
+        opacity: 0 !important;
+    }
+
+    /* 로고 뒤 글로우 오브 맥동 비활성화 */
+    .glow-orb {
+        animation: orbAppear 1s ease-out 0.8s forwards !important;
+        /* orbPulse 무한 반복 제거, 등장 애니메이션만 유지 */
+    }
+    /* ========== [테스트 끝] ========== */
+
     .headline-letter {
         height: 50px;
     }
