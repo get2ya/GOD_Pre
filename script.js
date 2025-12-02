@@ -41,7 +41,6 @@ document.addEventListener('DOMContentLoaded', function() {
         // 1. 배경 이미지 로드
         try {
             const bgTexture = await PIXI.Assets.load('resource/background.png');
-            console.log("배경 이미지 로드 성공:", bgTexture);
             backgroundSprite = new PIXI.Sprite(bgTexture);
         } catch (error) {
             console.error("배경 이미지 로드 실패 (CORS 문제일 수 있음):", error);
@@ -69,12 +68,6 @@ document.addEventListener('DOMContentLoaded', function() {
         displacementSprite.alpha = 0;
 
         pixiApp.stage.addChild(displacementSprite);
-
-        console.log("DisplacementSprite 추가 완료:", {
-            position: { x: displacementSprite.x, y: displacementSprite.y },
-            alpha: displacementSprite.alpha,
-            texture: displacementTexture
-        });
 
         // 3. Displacement Filter 생성
         displacementFilter = new PIXI.DisplacementFilter(displacementSprite);
@@ -110,7 +103,6 @@ document.addEventListener('DOMContentLoaded', function() {
         pixiContainer.style.opacity = '1';
 
         // 로고 등장 시점에 맞춰 물결 효과 시작 (Pixi 초기화 후 바로)
-        console.log("Pixi 초기화 완료, 물결 효과 시작");
         setTimeout(() => {
             triggerRippleEffect();
         }, 100);
@@ -157,15 +149,8 @@ document.addEventListener('DOMContentLoaded', function() {
     // 물결 효과 트리거
     function triggerRippleEffect() {
         if (!displacementSprite || !displacementFilter) {
-            console.error("물결 효과 트리거 실패: sprite 또는 filter 없음");
             return;
         }
-
-        console.log("물결 효과 시작!", {
-            sprite: displacementSprite,
-            filter: displacementFilter,
-            backgroundFilters: backgroundSprite?.filters
-        });
 
         // 파동 시작 위치 (화면 중앙)
         displacementSprite.position.set(pixiApp.screen.width / 2, pixiApp.screen.height / 2);
@@ -181,7 +166,6 @@ document.addEventListener('DOMContentLoaded', function() {
         // Gemini 제안: 효과가 약하면 150~500까지 증가 가능
         const maxFilterStrength = 150;
 
-        let frameCount = 0;
         function animate() {
             const now = performance.now();
             const progress = Math.min((now - startTime) / duration, 1);
@@ -197,18 +181,11 @@ document.addEventListener('DOMContentLoaded', function() {
             const strength = maxFilterStrength * (1 - ease);
             displacementFilter.scale.set(strength);
 
-            // 디버그 로그 (처음 몇 프레임만)
-            if (frameCount < 5) {
-                console.log(`프레임 ${frameCount}: scale=${currentScale.toFixed(2)}, strength=${strength.toFixed(2)}`);
-                frameCount++;
-            }
-
             if (progress < 1) {
                 requestAnimationFrame(animate);
             } else {
                 // 종료 시 왜곡 제거
                 displacementFilter.scale.set(0);
-                console.log("물결 효과 종료");
             }
         }
 
@@ -622,11 +599,8 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Web Animations API로 파티클 애니메이션 속도 제어
     let particleAnimations = [];
-    let logoAnimation = null;
     let currentParticleRate = 1;
-    let currentLogoRate = 1;
     let particleRateTransition = null;
-    let logoRateTransition = null;
 
     // 애니메이션 객체 수집
     function collectAnimations() {
@@ -637,12 +611,6 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         });
 
-        if (gameLogo) {
-            const logoAnimations = gameLogo.getAnimations();
-            if (logoAnimations.length > 0) {
-                logoAnimation = logoAnimations[0];
-            }
-        }
     }
 
     // 부드러운 속도 전환 함수
@@ -678,7 +646,6 @@ document.addEventListener('DOMContentLoaded', function() {
 
         // 기존 트랜지션 취소
         if (particleRateTransition) cancelAnimationFrame(particleRateTransition);
-        if (logoRateTransition) cancelAnimationFrame(logoRateTransition);
 
         // 파티클 속도 증가 (빠르게 전환: 300ms)
         particleRateTransition = smoothTransition(
@@ -704,7 +671,6 @@ document.addEventListener('DOMContentLoaded', function() {
     function resetEffects() {
         // 기존 트랜지션 취소
         if (particleRateTransition) cancelAnimationFrame(particleRateTransition);
-        if (logoRateTransition) cancelAnimationFrame(logoRateTransition);
 
         // 파티클 속도 원복 (천천히 전환: 1500ms)
         particleRateTransition = smoothTransition(
