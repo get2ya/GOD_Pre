@@ -223,6 +223,15 @@ document.addEventListener('DOMContentLoaded', function() {
             } else {
                 // 종료 시 왜곡 제거
                 displacementFilter.scale.set(0);
+
+                // [선명도 복원] Pixi 캔버스 페이드아웃, 원본 이미지 페이드인
+                // Pixi는 resolution=1이라 원본보다 흐릿함 → 물결 종료 후 원본으로 전환
+                if (pixiContainer && heroImage) {
+                    pixiContainer.style.transition = 'opacity 0.5s ease-out';
+                    heroImage.style.transition = 'opacity 0.5s ease-out';
+                    pixiContainer.style.opacity = '0';
+                    heroImage.style.opacity = '1';
+                }
             }
         }
 
