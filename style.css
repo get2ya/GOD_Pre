@@ -1391,27 +1391,32 @@ body {
     font-size: 1.3rem;
     font-weight: 700;
     text-decoration: none;
-    transition: transform 0.15s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.3s ease;
+    transition: transform 0.15s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.3s ease, animation 0.3s ease;
     box-shadow:
-        0 8px 25px rgba(3, 199, 90, 0.4),
-        0 0 0 0 rgba(3, 199, 90, 0);
+        0 8px 30px rgba(3, 199, 90, 0.5),
+        0 0 40px rgba(3, 199, 90, 0.3),
+        0 0 80px rgba(3, 199, 90, 0.15);
     position: relative;
     overflow: visible;
-    /* 호흡 효과 */
-    animation: btnBreathing 3s ease-in-out infinite;
+    /* 호흡 효과 - 강화된 맥동 */
+    animation: btnBreathing 2s ease-in-out infinite;
 }
 
-/* 1. 호흡 효과 - 미세한 스케일 + 글로우 변화 */
+/* 1. 호흡 효과 - 강화된 글로우 맥동 */
 @keyframes btnBreathing {
     0%, 100% {
         box-shadow:
-            0 8px 25px rgba(3, 199, 90, 0.4),
-            0 0 15px rgba(3, 199, 90, 0.2);
+            0 8px 30px rgba(3, 199, 90, 0.5),
+            0 0 40px rgba(3, 199, 90, 0.3),
+            0 0 80px rgba(3, 199, 90, 0.15);
+        transform: scale(1);
     }
     50% {
         box-shadow:
-            0 10px 35px rgba(3, 199, 90, 0.55),
-            0 0 25px rgba(3, 199, 90, 0.35);
+            0 12px 45px rgba(3, 199, 90, 0.7),
+            0 0 60px rgba(3, 199, 90, 0.5),
+            0 0 100px rgba(3, 199, 90, 0.25);
+        transform: scale(1.02);
     }
 }
 
@@ -1460,10 +1465,31 @@ body {
 
 
 .community-btn:hover {
-    transform: translateY(-5px) scale(1.02);
+    transform: translateY(-5px) scale(1.05);
     box-shadow:
-        0 15px 40px rgba(3, 199, 90, 0.5),
-        0 0 30px rgba(3, 199, 90, 0.3);
+        0 15px 50px rgba(3, 199, 90, 0.7),
+        0 0 60px rgba(3, 199, 90, 0.5),
+        0 0 120px rgba(3, 199, 90, 0.3);
+    /* 호버 시 더 빠른 맥동 */
+    animation: btnBreathingFast 0.8s ease-in-out infinite;
+}
+
+/* 호버 시 빠른 맥동 효과 */
+@keyframes btnBreathingFast {
+    0%, 100% {
+        box-shadow:
+            0 15px 50px rgba(3, 199, 90, 0.7),
+            0 0 60px rgba(3, 199, 90, 0.5),
+            0 0 120px rgba(3, 199, 90, 0.3);
+        transform: translateY(-5px) scale(1.05);
+    }
+    50% {
+        box-shadow:
+            0 20px 70px rgba(3, 199, 90, 0.9),
+            0 0 80px rgba(3, 199, 90, 0.7),
+            0 0 150px rgba(3, 199, 90, 0.4);
+        transform: translateY(-5px) scale(1.08);
+    }
 }
 
 .btn-icon {
