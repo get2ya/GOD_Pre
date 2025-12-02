@@ -4,6 +4,206 @@ document.addEventListener('DOMContentLoaded', function() {
     let currentSectionIndex = 0;
     let isScrolling = false;
 
+    // ========== 섹션 1: Pixi.js 동심원 물결 효과 (Gemini 검토 반영) ==========
+    const pixiContainer = document.getElementById('pixi-ripple-container');
+    const heroImage = document.querySelector('.hero-image');
+    let pixiApp = null;
+    let backgroundSprite = null;
+    let displacementFilter = null;
+    let displacementSprite = null;
+
+    // Pixi.js 초기화
+    async function initPixiRipple() {
+        if (!pixiContainer || !heroImage || typeof PIXI === 'undefined') {
+            console.error("Pixi.js 로드 실패 또는 컨테이너 없음");
+            return;
+        }
+
+        const containerRect = pixiContainer.parentElement.getBoundingClientRect();
+
+        // Pixi Application 생성
+        pixiApp = new PIXI.Application({
+            width: containerRect.width,
+            height: containerRect.height,
+            backgroundAlpha: 0,
+            resolution: window.devicePixelRatio || 1,
+            autoDensity: true,
+        });
+
+        pixiContainer.appendChild(pixiApp.view);
+
+        // 1. 배경 이미지 로드
+        try {
+            const bgTexture = await PIXI.Assets.load('resource/background.png');
+            console.log("배경 이미지 로드 성공:", bgTexture);
+            backgroundSprite = new PIXI.Sprite(bgTexture);
+        } catch (error) {
+            console.error("배경 이미지 로드 실패 (CORS 문제일 수 있음):", error);
+            return;
+        }
+
+        // 배경 이미지를 화면에 맞게 조절 (cover 효과)
+        fitBackground();
+
+        pixiApp.stage.addChild(backgroundSprite);
+
+        // 2. Displacement Map용 캔버스 생성 (동심원 그라데이션)
+        const displacementCanvas = createDisplacementMap(512);
+        const displacementTexture = PIXI.Texture.from(displacementCanvas);
+
+        // 텍스처 래핑 모드 설정 (가장자리가 자연스럽게)
+        displacementTexture.baseTexture.wrapMode = PIXI.WRAP_MODES.REPEAT;
+
+        displacementSprite = new PIXI.Sprite(displacementTexture);
+        displacementSprite.anchor.set(0.5);
+        displacementSprite.position.set(pixiApp.screen.width / 2, pixiApp.screen.height / 2);
+
+        // [핵심 수정] 스프라이트는 스테이지에 있어야 하지만, 눈에 보일 필요는 없음
+        // Gemini 제안: renderable=false 대신 alpha=0 사용 (더 안전한 방법)
+        displacementSprite.alpha = 0;
+
+        pixiApp.stage.addChild(displacementSprite);
+
+        console.log("DisplacementSprite 추가 완료:", {
+            position: { x: displacementSprite.x, y: displacementSprite.y },
+            alpha: displacementSprite.alpha,
+            texture: displacementTexture
+        });
+
+        // 3. Displacement Filter 생성
+        displacementFilter = new PIXI.DisplacementFilter(displacementSprite);
+
+        // 필터 영역 여백 설정 (파동이 화면 끝에서 잘리지 않게)
+        displacementFilter.padding = 100;
+
+        // 초기에는 왜곡 없게 설정
+        displacementFilter.scale.set(0);
+
+        backgroundSprite.filters = [displacementFilter];
+
+        // 리사이즈 대응
+        window.addEventListener('resize', () => {
+            const rect = pixiContainer.parentElement.getBoundingClientRect();
+            pixiApp.renderer.resize(rect.width, rect.height);
+            fitBackground();
+            displacementSprite.position.set(pixiApp.screen.width / 2, pixiApp.screen.height / 2);
+        });
+
+        // 기존 이미지 숨기고 Pixi 캔버스 보이기
+        heroImage.style.opacity = '0';
+        pixiContainer.style.opacity = '1';
+
+        // 로고 등장 시점에 맞춰 물결 효과 시작 (Pixi 초기화 후 바로)
+        console.log("Pixi 초기화 완료, 물결 효과 시작");
+        setTimeout(() => {
+            triggerRippleEffect();
+        }, 100);
+    }
+
+    // 배경 이미지를 화면에 맞추기 (cover 효과)
+    function fitBackground() {
+        if (!backgroundSprite || !pixiApp) return;
+
+        const ratio = Math.max(
+            pixiApp.screen.width / backgroundSprite.texture.width,
+            pixiApp.screen.height / backgroundSprite.texture.height
+        );
+        backgroundSprite.scale.set(ratio);
+        backgroundSprite.anchor.set(0.5);
+        backgroundSprite.position.set(pixiApp.screen.width / 2, pixiApp.screen.height / 2);
+    }
+
+    // 동심원 형태의 Displacement Map 생성
+    function createDisplacementMap(size) {
+        const canvas = document.createElement('canvas');
+        canvas.width = size;
+        canvas.height = size;
+        const ctx = canvas.getContext('2d');
+
+        const centerX = size / 2;
+        const centerY = size / 2;
+
+        // 128(0x80)이 중립(이동 없음)
+        // 밝으면 한쪽으로, 어두우면 반대쪽으로 픽셀을 밈
+        const gradient = ctx.createRadialGradient(centerX, centerY, 0, centerX, centerY, size / 2);
+        gradient.addColorStop(0, 'rgba(128, 128, 128, 1)');   // 중앙: 평평
+        gradient.addColorStop(0.3, 'rgba(200, 200, 200, 1)'); // 볼록 (밝음)
+        gradient.addColorStop(0.5, 'rgba(128, 128, 128, 1)'); // 평평
+        gradient.addColorStop(0.7, 'rgba(50, 50, 50, 1)');    // 오목 (어두움)
+        gradient.addColorStop(1, 'rgba(128, 128, 128, 1)');   // 가장자리: 평평
+
+        ctx.fillStyle = gradient;
+        ctx.fillRect(0, 0, size, size);
+
+        return canvas;
+    }
+
+    // 물결 효과 트리거
+    function triggerRippleEffect() {
+        if (!displacementSprite || !displacementFilter) {
+            console.error("물결 효과 트리거 실패: sprite 또는 filter 없음");
+            return;
+        }
+
+        console.log("물결 효과 시작!", {
+            sprite: displacementSprite,
+            filter: displacementFilter,
+            backgroundFilters: backgroundSprite?.filters
+        });
+
+        // 파동 시작 위치 (화면 중앙)
+        displacementSprite.position.set(pixiApp.screen.width / 2, pixiApp.screen.height / 2);
+
+        const duration = 2000; // 2초 동안 지속
+        const startTime = performance.now();
+
+        // 파동의 크기 (Sprite scale)
+        const startScale = 0.1;
+        const endScale = 4.0; // 화면을 덮을 정도로 커짐
+
+        // 왜곡의 강도 (Filter scale) - 값이 클수록 물결이 심하게 일렁임
+        // Gemini 제안: 효과가 약하면 150~500까지 증가 가능
+        const maxFilterStrength = 150;
+
+        let frameCount = 0;
+        function animate() {
+            const now = performance.now();
+            const progress = Math.min((now - startTime) / duration, 1);
+
+            // Ease-out 효과 (빠르게 시작해서 천천히 끝남)
+            const ease = 1 - Math.pow(1 - progress, 3);
+
+            // 1. 파동의 크기를 점점 키움
+            const currentScale = startScale + (endScale - startScale) * ease;
+            displacementSprite.scale.set(currentScale);
+
+            // 2. 왜곡 강도는 점점 줄어듦 (파동이 퍼지면서 약해짐)
+            const strength = maxFilterStrength * (1 - ease);
+            displacementFilter.scale.set(strength);
+
+            // 디버그 로그 (처음 몇 프레임만)
+            if (frameCount < 5) {
+                console.log(`프레임 ${frameCount}: scale=${currentScale.toFixed(2)}, strength=${strength.toFixed(2)}`);
+                frameCount++;
+            }
+
+            if (progress < 1) {
+                requestAnimationFrame(animate);
+            } else {
+                // 종료 시 왜곡 제거
+                displacementFilter.scale.set(0);
+                console.log("물결 효과 종료");
+            }
+        }
+
+        animate();
+    }
+
+    // 로고 등장 시점 (2.8초)에 맞춰 Pixi 초기화
+    setTimeout(() => {
+        initPixiRipple();
+    }, 2800);
+
     function scrollToSection(index) {
         if (index >= 0 && index < sections.length) {
             sections[index].scrollIntoView({ behavior: 'smooth', block: 'start' });
@@ -201,16 +401,16 @@ document.addEventListener('DOMContentLoaded', function() {
         requestAnimationFrame(animate);
     }
 
-    // 주기적으로 파티클 생성 (ambient - 느린 속도)
+    // 주기적으로 파티클 생성 (ambient - 기존 호버 수준으로 상향)
     function startAmbientSuction() {
         if (ambientInterval) return;
 
         ambientInterval = setInterval(() => {
             if (!isHovering) {
                 const startPos = getRandomEdgePosition();
-                createSuctionParticle(startPos, 2500 + Math.random() * 1500, 3 + Math.random() * 2);
+                createSuctionParticle(startPos, 600 + Math.random() * 400, 4 + Math.random() * 3);
             }
-        }, 800);
+        }, 150);
     }
 
     function stopAmbientSuction() {
@@ -220,25 +420,27 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }
 
-    // 호버 시 빠른 파티클 생성
+    // 호버 시 과격한 파티클 폭풍
     function startFastSuction() {
         isHovering = true;
 
         if (suctionInterval) clearInterval(suctionInterval);
 
-        // 즉시 여러 파티클 생성
-        for (let i = 0; i < 8; i++) {
+        // 즉시 폭발적으로 파티클 생성 (20개)
+        for (let i = 0; i < 20; i++) {
             setTimeout(() => {
                 const startPos = getRandomEdgePosition();
-                createSuctionParticle(startPos, 600 + Math.random() * 400, 4 + Math.random() * 3);
-            }, i * 50);
+                createSuctionParticle(startPos, 250 + Math.random() * 200, 5 + Math.random() * 4);
+            }, i * 20);
         }
 
-        // 연속 생성
+        // 연속 생성 (매우 빠름 - 50ms 간격, 한번에 2개씩)
         suctionInterval = setInterval(() => {
-            const startPos = getRandomEdgePosition();
-            createSuctionParticle(startPos, 500 + Math.random() * 300, 4 + Math.random() * 3);
-        }, 150);
+            for (let i = 0; i < 2; i++) {
+                const startPos = getRandomEdgePosition();
+                createSuctionParticle(startPos, 200 + Math.random() * 150, 5 + Math.random() * 4);
+            }
+        }, 50);
     }
 
     function stopFastSuction() {
@@ -254,14 +456,19 @@ document.addEventListener('DOMContentLoaded', function() {
     let sparkleInterval = null;
     let energyRingInterval = null;
 
+    // 모바일 감지
+    const isMobile = window.innerWidth <= 768;
+
     // 십자 스파크 생성
     function createSparkle() {
         const btnRect = communityBtn.getBoundingClientRect();
         const sectionRect = communitySection.getBoundingClientRect();
 
-        // 버튼 주변 랜덤 위치 (버튼 가장자리 근처)
+        // 버튼 주변 랜덤 위치 (모바일에서는 더 가깝게)
         const angle = Math.random() * Math.PI * 2;
-        const distance = 80 + Math.random() * 60;
+        const baseDistance = isMobile ? 40 : 80;
+        const randomRange = isMobile ? 30 : 60;
+        const distance = baseDistance + Math.random() * randomRange;
         const x = (btnRect.left + btnRect.width / 2 - sectionRect.left) + Math.cos(angle) * distance;
         const y = (btnRect.top + btnRect.height / 2 - sectionRect.top) + Math.sin(angle) * distance;
 
@@ -293,9 +500,11 @@ document.addEventListener('DOMContentLoaded', function() {
         const btnRect = communityBtn.getBoundingClientRect();
         const sectionRect = communitySection.getBoundingClientRect();
 
-        // 버튼 주변 랜덤 위치
+        // 버튼 주변 랜덤 위치 (모바일에서는 더 가깝게)
         const angle = Math.random() * Math.PI * 2;
-        const distance = 50 + Math.random() * 100;
+        const baseDistance = isMobile ? 30 : 50;
+        const randomRange = isMobile ? 50 : 100;
+        const distance = baseDistance + Math.random() * randomRange;
         const x = (btnRect.left + btnRect.width / 2 - sectionRect.left) + Math.cos(angle) * distance;
         const y = (btnRect.top + btnRect.height / 2 - sectionRect.top) + Math.sin(angle) * distance;
 
@@ -361,7 +570,12 @@ document.addEventListener('DOMContentLoaded', function() {
         }
         scheduleNextSparkle();
 
-        // 에너지 링 간격 (3~5초)
+        // 첫 에너지 링은 0.3~0.5초 후 즉시 발생
+        setTimeout(() => {
+            createEnergyRing();
+        }, 300 + Math.random() * 200);
+
+        // 이후 에너지 링 간격 (3~5초)
         function scheduleEnergyRing() {
             const delay = 3000 + Math.random() * 2000;
             energyRingInterval = setTimeout(() => {
@@ -369,7 +583,10 @@ document.addEventListener('DOMContentLoaded', function() {
                 scheduleEnergyRing();
             }, delay);
         }
-        scheduleEnergyRing();
+        // 첫 링 후 3~5초 뒤부터 반복
+        setTimeout(() => {
+            scheduleEnergyRing();
+        }, 500);
     }
 
     function stopSparkleEffect() {
