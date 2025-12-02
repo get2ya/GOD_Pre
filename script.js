@@ -26,8 +26,10 @@ document.addEventListener('DOMContentLoaded', function() {
 
         const containerRect = pixiContainer.parentElement.getBoundingClientRect();
 
-        // [최적화] 모바일 해상도 1배 고정 (가장 확실한 메모리 절약)
-        // 아이폰 14 Pro (DPR 3) 등에서 메모리 폭발 완전 방지
+        // [최적화] 모바일/PC 판단 (768px 기준)
+        const isMobile = window.innerWidth <= 768;
+
+        // [최적화] 해상도 제한 (모바일 1배 고정, 메모리 절약)
         const pixelRatio = 1;
 
         // Pixi Application 생성
@@ -37,14 +39,16 @@ document.addEventListener('DOMContentLoaded', function() {
             backgroundAlpha: 0,
             resolution: pixelRatio,
             autoDensity: true,
-            powerPreference: 'high-performance', // 배터리 절약 모드 대신 고성능 모드 요청
+            powerPreference: 'high-performance',
         });
 
         pixiContainer.appendChild(pixiApp.view);
 
-        // 1. 배경 이미지 로드
+        // 1. 배경 이미지 로드 (적응형: 모바일/PC 분기 + JPG 사용으로 용량 대폭 절감)
+        const bgPath = isMobile ? 'resource/background_m.jpg' : 'resource/background.jpg';
+
         try {
-            const bgTexture = await PIXI.Assets.load('resource/background.png');
+            const bgTexture = await PIXI.Assets.load(bgPath);
             backgroundSprite = new PIXI.Sprite(bgTexture);
         } catch (error) {
             console.error("배경 이미지 로드 실패 (CORS 문제일 수 있음):", error);
