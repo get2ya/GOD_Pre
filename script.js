@@ -494,15 +494,59 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }
 
+    // ========== 4. 마그네틱 커서 효과 ==========
+    let btnRect = communityBtn.getBoundingClientRect();
+    const magnetStrength = 0.3; // 끌림 강도 (0.1 ~ 0.5 권장)
+    const magnetRange = 100; // 마그네틱 효과 범위 (px)
+
+    // 버튼 위치 업데이트 (스크롤/리사이즈 시)
+    function updateBtnRect() {
+        btnRect = communityBtn.getBoundingClientRect();
+    }
+
+    // 마그네틱 효과 적용
+    function applyMagneticEffect(e) {
+        const btnCenterX = btnRect.left + btnRect.width / 2;
+        const btnCenterY = btnRect.top + btnRect.height / 2;
+
+        const deltaX = e.clientX - btnCenterX;
+        const deltaY = e.clientY - btnCenterY;
+        const distance = Math.sqrt(deltaX * deltaX + deltaY * deltaY);
+
+        // 버튼 위에 있거나 근처에 있을 때만 효과 적용
+        if (distance < magnetRange + btnRect.width / 2) {
+            const moveX = deltaX * magnetStrength;
+            const moveY = deltaY * magnetStrength;
+
+            communityBtn.style.transform = `translate(${moveX}px, ${moveY}px)`;
+        }
+    }
+
+    // 마그네틱 효과 리셋
+    function resetMagneticEffect() {
+        communityBtn.style.transform = '';
+    }
+
     // 이벤트 리스너
     communityBtn.addEventListener('mouseenter', () => {
         startFastSuction();
         speedUpEffects();
+        updateBtnRect();
     });
+
+    communityBtn.addEventListener('mousemove', (e) => {
+        applyMagneticEffect(e);
+    });
+
     communityBtn.addEventListener('mouseleave', () => {
         stopFastSuction();
         resetEffects();
+        resetMagneticEffect();
     });
+
+    // 스크롤/리사이즈 시 버튼 위치 업데이트
+    window.addEventListener('scroll', updateBtnRect, { passive: true });
+    window.addEventListener('resize', updateBtnRect, { passive: true });
 
     // 섹션이 보일 때만 ambient 파티클 및 스파크 효과 생성
     const sectionObserver = new IntersectionObserver((entries) => {

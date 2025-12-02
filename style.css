@@ -161,13 +161,14 @@ body {
 /* 스파크 불꽃 파티클 - 더 화려하게 */
 .sparks-container {
     position: absolute;
-    top: 0;
-    left: 0;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
     width: 100%;
     height: 100%;
-    z-index: 17;
+    z-index: -1;
     pointer-events: none;
-    overflow: hidden;
+    overflow: visible;
 }
 
 .spark {
@@ -205,26 +206,26 @@ body {
 }
 
 /* 스파크 위치 및 애니메이션 */
-.spark:nth-child(1) { left: 50%; top: 50%; animation: sparkFly1 2s ease-out 1.2s forwards; }
-.spark:nth-child(2) { left: 50%; top: 50%; animation: sparkFly2 2.2s ease-out 1.3s forwards; }
-.spark:nth-child(3) { left: 50%; top: 50%; animation: sparkFly3 1.8s ease-out 1.4s forwards; }
-.spark:nth-child(4) { left: 50%; top: 50%; animation: sparkFly4 2.5s ease-out 1.2s forwards; }
-.spark:nth-child(5) { left: 50%; top: 50%; animation: sparkFly5 2s ease-out 1.5s forwards; }
-.spark:nth-child(6) { left: 50%; top: 50%; animation: sparkFly6 2.3s ease-out 1.3s forwards; }
-.spark:nth-child(7) { left: 50%; top: 50%; animation: sparkFly7 1.9s ease-out 1.4s forwards; }
-.spark:nth-child(8) { left: 50%; top: 50%; animation: sparkFly8 2.1s ease-out 1.2s forwards; }
-.spark:nth-child(9) { left: 50%; top: 50%; animation: sparkFly1 2.4s ease-out 1.6s forwards; }
-.spark:nth-child(10) { left: 50%; top: 50%; animation: sparkFly2 2s ease-out 1.7s forwards; }
-.spark:nth-child(11) { left: 50%; top: 50%; animation: sparkFly3 2.2s ease-out 1.5s forwards; }
-.spark:nth-child(12) { left: 50%; top: 50%; animation: sparkFly4 1.8s ease-out 1.8s forwards; }
-.spark:nth-child(13) { left: 50%; top: 50%; animation: sparkFly5 2.6s ease-out 1.4s forwards; }
-.spark:nth-child(14) { left: 50%; top: 50%; animation: sparkFly6 2s ease-out 1.9s forwards; }
-.spark:nth-child(15) { left: 50%; top: 50%; animation: sparkFly7 2.3s ease-out 1.6s forwards; }
-.spark:nth-child(16) { left: 50%; top: 50%; animation: sparkFly8 1.9s ease-out 2s forwards; }
-.spark:nth-child(17) { left: 50%; top: 50%; animation: sparkFly1 2.1s ease-out 1.8s forwards; }
-.spark:nth-child(18) { left: 50%; top: 50%; animation: sparkFly3 2.4s ease-out 1.7s forwards; }
-.spark:nth-child(19) { left: 50%; top: 50%; animation: sparkFly5 2s ease-out 1.9s forwards; }
-.spark:nth-child(20) { left: 50%; top: 50%; animation: sparkFly7 2.2s ease-out 2.1s forwards; }
+.spark:nth-child(1) { left: 50%; top: 50%; animation: sparkFly1 2s ease-out 2.8s forwards; }
+.spark:nth-child(2) { left: 50%; top: 50%; animation: sparkFly2 2.2s ease-out 2.85s forwards; }
+.spark:nth-child(3) { left: 50%; top: 50%; animation: sparkFly3 1.8s ease-out 2.9s forwards; }
+.spark:nth-child(4) { left: 50%; top: 50%; animation: sparkFly4 2.5s ease-out 2.8s forwards; }
+.spark:nth-child(5) { left: 50%; top: 50%; animation: sparkFly5 2s ease-out 2.95s forwards; }
+.spark:nth-child(6) { left: 50%; top: 50%; animation: sparkFly6 2.3s ease-out 2.85s forwards; }
+.spark:nth-child(7) { left: 50%; top: 50%; animation: sparkFly7 1.9s ease-out 2.9s forwards; }
+.spark:nth-child(8) { left: 50%; top: 50%; animation: sparkFly8 2.1s ease-out 2.8s forwards; }
+.spark:nth-child(9) { left: 50%; top: 50%; animation: sparkFly1 2.4s ease-out 3.0s forwards; }
+.spark:nth-child(10) { left: 50%; top: 50%; animation: sparkFly2 2s ease-out 3.05s forwards; }
+.spark:nth-child(11) { left: 50%; top: 50%; animation: sparkFly3 2.2s ease-out 2.95s forwards; }
+.spark:nth-child(12) { left: 50%; top: 50%; animation: sparkFly4 1.8s ease-out 3.1s forwards; }
+.spark:nth-child(13) { left: 50%; top: 50%; animation: sparkFly5 2.6s ease-out 2.9s forwards; }
+.spark:nth-child(14) { left: 50%; top: 50%; animation: sparkFly6 2s ease-out 3.15s forwards; }
+.spark:nth-child(15) { left: 50%; top: 50%; animation: sparkFly7 2.3s ease-out 3.0s forwards; }
+.spark:nth-child(16) { left: 50%; top: 50%; animation: sparkFly8 1.9s ease-out 3.2s forwards; }
+.spark:nth-child(17) { left: 50%; top: 50%; animation: sparkFly1 2.1s ease-out 3.1s forwards; }
+.spark:nth-child(18) { left: 50%; top: 50%; animation: sparkFly3 2.4s ease-out 3.05s forwards; }
+.spark:nth-child(19) { left: 50%; top: 50%; animation: sparkFly5 2s ease-out 3.15s forwards; }
+.spark:nth-child(20) { left: 50%; top: 50%; animation: sparkFly7 2.2s ease-out 3.25s forwards; }
 
 @keyframes sparkFly1 {
     0% { opacity: 1; transform: translate(0, 0) scale(1); }
@@ -269,19 +270,19 @@ body {
     border: 3px solid rgba(255, 107, 0, 0.9);
     border-radius: 50%;
     transform: translate(-50%, -50%) scale(0);
-    z-index: 16;
+    z-index: -1;
     opacity: 0;
     box-shadow: 0 0 30px rgba(255, 107, 0, 0.5), inset 0 0 30px rgba(255, 107, 0, 0.3);
-    animation: energyPulse 3s ease-out 1s forwards;
+    animation: energyPulse 3s ease-out 2.8s forwards;
 }
 
 .energy-wave.delay-1 {
-    animation-delay: 1.3s;
+    animation-delay: 3.0s;
     border-color: rgba(255, 170, 0, 0.8);
 }
 
 .energy-wave.delay-2 {
-    animation-delay: 1.6s;
+    animation-delay: 3.2s;
     border-color: rgba(255, 200, 0, 0.7);
 }
 
@@ -564,12 +565,36 @@ body {
         height: 50px;
         opacity: 1;
         border-width: 3px;
+        border-color: rgba(255, 107, 0, 0.9);
+        box-shadow:
+            0 0 20px rgba(255, 107, 0, 0.8),
+            0 0 40px rgba(255, 170, 0, 0.5),
+            inset 0 0 20px rgba(255, 107, 0, 0.4);
+    }
+    40% {
+        border-color: rgba(0, 150, 255, 0.8);
+        box-shadow:
+            0 0 25px rgba(0, 150, 255, 0.7),
+            0 0 50px rgba(0, 100, 255, 0.4),
+            inset 0 0 25px rgba(0, 150, 255, 0.3);
+    }
+    70% {
+        border-color: rgba(255, 255, 255, 0.7);
+        box-shadow:
+            0 0 30px rgba(255, 255, 255, 0.6),
+            0 0 60px rgba(200, 220, 255, 0.3),
+            inset 0 0 30px rgba(255, 255, 255, 0.2);
     }
     100% {
         width: 800px;
         height: 800px;
         opacity: 0;
         border-width: 1px;
+        border-color: rgba(255, 255, 255, 0);
+        box-shadow:
+            0 0 40px rgba(255, 255, 255, 0),
+            0 0 80px rgba(255, 255, 255, 0),
+            inset 0 0 40px rgba(255, 255, 255, 0);
     }
 }
 
@@ -1191,31 +1216,73 @@ body {
     font-size: 1.3rem;
     font-weight: 700;
     text-decoration: none;
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    transition: transform 0.15s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.3s ease;
     box-shadow:
         0 8px 25px rgba(3, 199, 90, 0.4),
         0 0 0 0 rgba(3, 199, 90, 0);
     position: relative;
-    overflow: hidden;
+    overflow: visible;
+    /* 호흡 효과 */
+    animation: btnBreathing 3s ease-in-out infinite;
+}
+
+/* 1. 호흡 효과 - 미세한 스케일 + 글로우 변화 */
+@keyframes btnBreathing {
+    0%, 100% {
+        box-shadow:
+            0 8px 25px rgba(3, 199, 90, 0.4),
+            0 0 15px rgba(3, 199, 90, 0.2);
+    }
+    50% {
+        box-shadow:
+            0 10px 35px rgba(3, 199, 90, 0.55),
+            0 0 25px rgba(3, 199, 90, 0.35);
+    }
+}
+
+/* 2. 라이트 트레일 - 테두리를 따라 빛이 순환 */
+.community-btn::after {
+    content: '';
+    position: absolute;
+    top: -2px;
+    left: -2px;
+    right: -2px;
+    bottom: -2px;
+    border-radius: 62px;
+    background: conic-gradient(
+        from 0deg,
+        transparent 0deg,
+        transparent 340deg,
+        rgba(255, 255, 255, 0.8) 350deg,
+        #03C75A 355deg,
+        rgba(255, 255, 255, 0.9) 360deg
+    );
+    z-index: -1;
+    animation: lightTrail 4s linear infinite;
+    opacity: 0.8;
 }
 
 .community-btn::before {
     content: '';
     position: absolute;
     top: 0;
-    left: -100%;
-    width: 100%;
-    height: 100%;
-    background: linear-gradient(90deg,
-        transparent,
-        rgba(255, 255, 255, 0.2),
-        transparent);
-    transition: left 0.5s ease;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    border-radius: 60px;
+    background: linear-gradient(135deg, #03C75A, #00A847);
+    z-index: 0;
 }
 
-.community-btn:hover::before {
-    left: 100%;
+@keyframes lightTrail {
+    0% {
+        transform: rotate(0deg);
+    }
+    100% {
+        transform: rotate(360deg);
+    }
 }
+
 
 .community-btn:hover {
     transform: translateY(-5px) scale(1.02);
@@ -1235,6 +1302,8 @@ body {
     display: flex;
     align-items: center;
     justify-content: center;
+    position: relative;
+    z-index: 1;
     transition: transform 0.3s ease;
 }
 
@@ -1244,6 +1313,8 @@ body {
 
 .btn-text {
     letter-spacing: 0.05rem;
+    position: relative;
+    z-index: 1;
 }
 
 .community-features {
