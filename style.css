@@ -1481,6 +1481,23 @@ body {
     .community-btn {
         padding: 15px 35px;
         font-size: 1.2rem;
+        white-space: nowrap;
+    }
+
+    /* 작은 모바일 화면 (Galaxy S20 등 360px 이하) */
+    @media (max-width: 400px) {
+        .community-btn {
+            padding: 12px 20px;
+            font-size: 0.95rem;
+            gap: 10px;
+        }
+
+        .btn-icon {
+            width: 32px;
+            height: 32px;
+            font-size: 1.4rem;
+            flex-shrink: 0;
+        }
     }
 
     .community-features {
