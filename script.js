@@ -112,8 +112,22 @@ document.addEventListener('DOMContentLoaded', function() {
         heroImage.style.opacity = '0';
         pixiContainer.style.opacity = '1';
 
-        // 로고 등장 시점에 맞춰 물결 효과 시작 (Pixi 초기화 후 바로)
-        setTimeout(() => {
+        // [저사양 PC 대응] 안전한 시작 함수 - 화면 크기 재계산 후 물결 효과 시작
+        const safeStart = () => {
+            // 1. 강제로 화면 크기 다시 맞춤 (저사양 PC에서 초기화 오류 방지)
+            const parent = pixiContainer.parentElement;
+            if (parent && pixiApp) {
+                const rect = parent.getBoundingClientRect();
+                pixiApp.renderer.resize(rect.width, rect.height);
+                fitBackground(); // 배경 이미지 다시 맞춤
+
+                // displacement 스프라이트 위치도 재조정
+                if (displacementSprite) {
+                    displacementSprite.position.set(rect.width / 2, rect.height / 2);
+                }
+            }
+
+            // 2. 물결 효과 시작
             triggerRippleEffect();
 
             // [시퀀스 처리] 물결 효과 종료 후 CSS 맥동 효과 시작 (GPU 부하 분산)
@@ -142,7 +156,19 @@ document.addEventListener('DOMContentLoaded', function() {
                     console.log('[모바일 최적화] GPU 부하 분산: 물결 효과 종료 후 CSS 맥동 시작');
                 }, 2000); // 물결 효과 duration(2초) 후 실행
             }
-        }, 100);
+        };
+
+        // 로딩 완료 후 0.1초 뒤에 실행 (1차 시도)
+        setTimeout(safeStart, 100);
+
+        // [저사양 PC 안전장치] 0.5초 뒤에 한 번 더 위치 재조정
+        setTimeout(() => {
+            if (pixiApp && pixiContainer.parentElement) {
+                const rect = pixiContainer.parentElement.getBoundingClientRect();
+                pixiApp.renderer.resize(rect.width, rect.height);
+                fitBackground();
+            }
+        }, 500);
     }
 
     // 배경 이미지를 화면에 맞추기 (cover 효과)
