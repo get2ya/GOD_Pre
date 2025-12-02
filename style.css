@@ -1131,14 +1131,15 @@ body {
     position: relative;
     margin-top: 80px;
     margin-bottom: 15px;
+    margin-left: -10px;
     opacity: 0;
     transform: translateY(-40px) scale(0.8);
     animation: sloganReveal 1.2s cubic-bezier(0.34, 1.56, 0.64, 1) 0.3s forwards;
 }
 
 .slogan-image {
-    max-width: 600px;
-    width: 85%;
+    max-width: 900px;
+    width: 128%;
     height: auto;
     filter: drop-shadow(0 5px 20px rgba(255, 200, 100, 0.4));
     position: relative;
@@ -1766,11 +1767,12 @@ body {
     .slogan-container {
         margin-top: 60px;
         margin-bottom: 10px;
+        margin-left: -10px;
     }
 
     .slogan-image {
-        max-width: 85%;
-        width: 85%;
+        max-width: none;
+        width: 170%;
     }
 
     .slogan-sparkle {
