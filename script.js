@@ -276,6 +276,15 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }
 
+    // [추가] scroll indicator 클릭 시 섹션2로 이동
+    const scrollIndicator = document.querySelector('.scroll-indicator');
+    if (scrollIndicator) {
+        scrollIndicator.style.cursor = 'pointer';
+        scrollIndicator.addEventListener('click', () => {
+            scrollToSection(1); // 섹션2(index: 1)로 이동
+        });
+    }
+
     let scrollTimeout;
     if (scrollContainer) {
         scrollContainer.addEventListener('wheel', function(e) {
