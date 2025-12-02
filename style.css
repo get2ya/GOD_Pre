@@ -1398,8 +1398,8 @@ body {
         0 0 80px rgba(3, 199, 90, 0.15);
     position: relative;
     overflow: visible;
-    /* 호흡 효과 - 강화된 맥동 */
-    animation: btnBreathing 2s ease-in-out infinite;
+    /* 호흡 효과 - 로고 글로우(3s)와 동일한 타이밍 */
+    animation: btnBreathing 3s ease-in-out infinite;
 }
 
 /* 1. 호흡 효과 - 강화된 글로우 맥동 (transform 제거하여 마그네틱 효과와 충돌 방지) */
