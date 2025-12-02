@@ -1347,6 +1347,13 @@ body {
 }
 
 @media (max-width: 768px) {
+    /* 모바일 섹션1: 중앙 캐릭터 더 밝게 (PC보다 투명 영역 넓게) */
+    .hero-overlay {
+        background:
+            radial-gradient(ellipse 80% 80% at 50% 45%, transparent 0%, rgba(0,0,0,0.4) 100%),
+            linear-gradient(180deg, rgba(0,0,0,0.05) 0%, rgba(0,0,0,0.5) 100%);
+    }
+
     /* 모바일용 섹션2 배경 이미지 (용량 절감) */
     .community-section {
         background:
