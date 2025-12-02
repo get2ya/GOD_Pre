@@ -1402,21 +1402,19 @@ body {
     animation: btnBreathing 2s ease-in-out infinite;
 }
 
-/* 1. 호흡 효과 - 강화된 글로우 맥동 */
+/* 1. 호흡 효과 - 강화된 글로우 맥동 (transform 제거하여 마그네틱 효과와 충돌 방지) */
 @keyframes btnBreathing {
     0%, 100% {
         box-shadow:
             0 8px 30px rgba(3, 199, 90, 0.5),
             0 0 40px rgba(3, 199, 90, 0.3),
             0 0 80px rgba(3, 199, 90, 0.15);
-        transform: scale(1);
     }
     50% {
         box-shadow:
             0 12px 45px rgba(3, 199, 90, 0.7),
             0 0 60px rgba(3, 199, 90, 0.5),
             0 0 100px rgba(3, 199, 90, 0.25);
-        transform: scale(1.02);
     }
 }
 
@@ -1465,30 +1463,27 @@ body {
 
 
 .community-btn:hover {
-    transform: translateY(-5px) scale(1.05);
     box-shadow:
         0 15px 50px rgba(3, 199, 90, 0.7),
         0 0 60px rgba(3, 199, 90, 0.5),
         0 0 120px rgba(3, 199, 90, 0.3);
-    /* 호버 시 더 빠른 맥동 */
+    /* 호버 시 더 빠른 맥동 (transform 제거하여 마그네틱 효과와 충돌 방지) */
     animation: btnBreathingFast 0.8s ease-in-out infinite;
 }
 
-/* 호버 시 빠른 맥동 효과 */
+/* 호버 시 빠른 맥동 효과 (transform 제거) */
 @keyframes btnBreathingFast {
     0%, 100% {
         box-shadow:
             0 15px 50px rgba(3, 199, 90, 0.7),
             0 0 60px rgba(3, 199, 90, 0.5),
             0 0 120px rgba(3, 199, 90, 0.3);
-        transform: translateY(-5px) scale(1.05);
     }
     50% {
         box-shadow:
             0 20px 70px rgba(3, 199, 90, 0.9),
             0 0 80px rgba(3, 199, 90, 0.7),
             0 0 150px rgba(3, 199, 90, 0.4);
-        transform: translateY(-5px) scale(1.08);
     }
 }
 
