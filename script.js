@@ -729,8 +729,8 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // ========== 4. 마그네틱 커서 효과 ==========
     let btnRect = communityBtn.getBoundingClientRect();
-    const magnetStrength = 0.3; // 끌림 강도 (0.1 ~ 0.5 권장)
-    const magnetRange = 250; // 마그네틱 효과 범위 (px) - 대폭 확대
+    const magnetStrength = 0.3; // 끌림 강도 (0.1 ~ 0.5 권장) - 고정
+    const magnetRange = 1200; // 마그네틱 효과 범위 (px) - 초광역
 
     // 버튼 위치 업데이트 (스크롤/리사이즈 시)
     function updateBtnRect() {

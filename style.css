@@ -1285,9 +1285,9 @@ body {
     }
 }
 
-/* 로고 호버 시 빠른 맥동 */
-.game-logo:hover {
-    animation: logoGlowFast 0.8s ease-in-out infinite;
+/* 버튼 호버 시 로고도 함께 빠른 맥동 (JS에서 .glow-fast 클래스 추가) */
+.game-logo.glow-fast {
+    animation: logoGlowFast 1.5s ease-in-out infinite;
 }
 
 @keyframes logoGlowFast {
