@@ -1387,28 +1387,39 @@ body {
             url('resource/background2_m.jpg') center center / cover no-repeat;
     }
 
-    /* ========== [테스트] 모바일 성능 최적화 - CSS 맥동 효과 비활성화 ========== */
-    /* WebGL(Pixi) + CSS Shadow 애니메이션 충돌로 인한 메모리 문제 테스트 */
+    /* ========== 모바일 성능 최적화 - 시퀀스 처리 ========== */
+    /* WebGL(Pixi) 물결 효과가 끝난 후 CSS 맥동 효과 시작 (GPU 부하 분산) */
 
-    /* 섹션1 로고 글로우 맥동 비활성화 */
+    /* 섹션1 로고: 기본 상태 (맥동 없음, 고정 그림자) */
     .reveal-logo {
         animation: logoReveal 1.5s cubic-bezier(0.16, 1, 0.3, 1) forwards !important;
         filter: drop-shadow(0 0 30px rgba(255, 107, 0, 0.5)) !important;
     }
 
-    /* 섹션2 로고 글로우 맥동 비활성화 */
+    /* 섹션1 로고: 물결 효과 종료 후 맥동 시작 (JS에서 .start-pulse 추가) */
+    .reveal-logo.start-pulse {
+        animation: logoReveal 1.5s cubic-bezier(0.16, 1, 0.3, 1) forwards,
+                   logoGlow 2.5s ease-in-out infinite !important;
+    }
+
+    /* 섹션2 로고: 기본 상태 (맥동 없음) */
     .game-logo {
         animation: none !important;
         filter: drop-shadow(0 10px 30px rgba(255, 107, 0, 0.5)) !important;
     }
 
-    /* 버튼 호버 시 로고 글로우 변경도 비활성화 */
+    /* 섹션2 로고: 맥동 활성화 (JS에서 .start-pulse 추가) */
+    .game-logo.start-pulse {
+        animation: logoGlowSoft 3s ease-in-out infinite !important;
+    }
+
+    /* 버튼 호버 시 로고 글로우 변경 */
     .game-logo.glow-fast {
         animation: none !important;
         filter: drop-shadow(0 10px 30px rgba(3, 199, 90, 0.6)) !important;
     }
 
-    /* 동심원 링 애니메이션 비활성화 (개별 링 포함) */
+    /* 동심원 링: 기본 비활성화 */
     .ring,
     .ring-1,
     .ring-2,
@@ -1419,12 +1430,24 @@ body {
         opacity: 0 !important;
     }
 
-    /* 로고 뒤 글로우 오브 맥동 비활성화 */
+    /* 동심원 링: 물결 효과 종료 후 활성화 (JS에서 .start-pulse 추가) */
+    .ring.start-pulse { animation: ringExpand 1.5s cubic-bezier(0.16, 1, 0.3, 1) forwards !important; opacity: 1 !important; }
+    .ring-1.start-pulse { animation: ringExpand 1.5s cubic-bezier(0.16, 1, 0.3, 1) forwards !important; opacity: 1 !important; }
+    .ring-2.start-pulse { animation: ringExpand 1.5s cubic-bezier(0.16, 1, 0.3, 1) 0.1s forwards !important; opacity: 1 !important; }
+    .ring-3.start-pulse { animation: ringExpand 1.5s cubic-bezier(0.16, 1, 0.3, 1) 0.2s forwards !important; opacity: 1 !important; }
+    .ring-4.start-pulse { animation: ringExpand 1.5s cubic-bezier(0.16, 1, 0.3, 1) 0.3s forwards !important; opacity: 1 !important; }
+    .ring-5.start-pulse { animation: ringExpand 1.5s cubic-bezier(0.16, 1, 0.3, 1) 0.4s forwards !important; opacity: 1 !important; }
+
+    /* 로고 뒤 글로우 오브: 기본 상태 (등장만, 맥동 없음) */
     .glow-orb {
         animation: orbAppear 1s ease-out 0.8s forwards !important;
-        /* orbPulse 무한 반복 제거, 등장 애니메이션만 유지 */
     }
-    /* ========== [테스트 끝] ========== */
+
+    /* 글로우 오브: 물결 효과 종료 후 맥동 시작 */
+    .glow-orb.start-pulse {
+        animation: orbAppear 1s ease-out 0.8s forwards, orbPulse 3s ease-in-out infinite 2s !important;
+    }
+    /* ========== 시퀀스 처리 끝 ========== */
 
     .headline-letter {
         height: 50px;

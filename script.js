@@ -113,6 +113,31 @@ document.addEventListener('DOMContentLoaded', function() {
         // 로고 등장 시점에 맞춰 물결 효과 시작 (Pixi 초기화 후 바로)
         setTimeout(() => {
             triggerRippleEffect();
+
+            // [시퀀스 처리] 물결 효과 종료 후 CSS 맥동 효과 시작 (GPU 부하 분산)
+            // 모바일에서만 적용 (768px 이하)
+            if (window.innerWidth <= 768) {
+                setTimeout(() => {
+                    // 섹션1 로고 맥동 시작
+                    const revealLogo = document.querySelector('.reveal-logo');
+                    if (revealLogo) revealLogo.classList.add('start-pulse');
+
+                    // 글로우 오브 맥동 시작
+                    const glowOrb = document.querySelector('.glow-orb');
+                    if (glowOrb) glowOrb.classList.add('start-pulse');
+
+                    // 동심원 링 애니메이션 시작
+                    document.querySelectorAll('.ring, .ring-1, .ring-2, .ring-3, .ring-4, .ring-5').forEach(ring => {
+                        ring.classList.add('start-pulse');
+                    });
+
+                    // 섹션2 로고 맥동 시작
+                    const gameLogo = document.querySelector('.game-logo');
+                    if (gameLogo) gameLogo.classList.add('start-pulse');
+
+                    console.log('[모바일 최적화] GPU 부하 분산: 물결 효과 종료 후 CSS 맥동 시작');
+                }, 2000); // 물결 효과 duration(2초) 후 실행
+            }
         }, 100);
     }
 
