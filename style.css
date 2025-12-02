@@ -698,7 +698,7 @@ body {
 .community-section {
     background:
         linear-gradient(180deg, rgba(0,0,0,0.7) 0%, rgba(0,0,0,0.5) 50%, rgba(0,0,0,0.8) 100%),
-        url('resource/background2.png') center center / cover no-repeat;
+        url('resource/background2.jpg') center center / cover no-repeat;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -1380,6 +1380,13 @@ body {
 }
 
 @media (max-width: 768px) {
+    /* 모바일용 섹션2 배경 이미지 (용량 절감) */
+    .community-section {
+        background:
+            linear-gradient(180deg, rgba(0,0,0,0.7) 0%, rgba(0,0,0,0.5) 50%, rgba(0,0,0,0.8) 100%),
+            url('resource/background2_m.jpg') center center / cover no-repeat;
+    }
+
     .headline-letter {
         height: 50px;
     }
