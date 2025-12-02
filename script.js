@@ -26,8 +26,10 @@ document.addEventListener('DOMContentLoaded', function() {
 
         const containerRect = pixiContainer.parentElement.getBoundingClientRect();
 
-        // [최적화] 모바일/PC 판단 (768px 기준)
-        const isMobile = window.innerWidth <= 768;
+        // [최적화] 모바일/PC 판단 (768px 이하 + 터치 디바이스)
+        // 태블릿/큰 화면 모바일은 PC 버전으로 표시
+        const isTouchDevice = ('ontouchstart' in window) || (navigator.maxTouchPoints > 0);
+        const isMobile = window.innerWidth <= 768 && isTouchDevice;
 
         // [최적화] 해상도 제한 (모바일 1배 고정, 메모리 절약)
         const pixelRatio = 1;
@@ -115,8 +117,10 @@ document.addEventListener('DOMContentLoaded', function() {
             triggerRippleEffect();
 
             // [시퀀스 처리] 물결 효과 종료 후 CSS 맥동 효과 시작 (GPU 부하 분산)
-            // 모바일에서만 적용 (768px 이하)
-            if (window.innerWidth <= 768) {
+            // 모바일에서만 적용 (768px 이하 + 터치 디바이스)
+            const isTouchDevice = ('ontouchstart' in window) || (navigator.maxTouchPoints > 0);
+            const isMobileDevice = window.innerWidth <= 768 && isTouchDevice;
+            if (isMobileDevice) {
                 setTimeout(() => {
                     // 섹션1 로고 맥동 시작
                     const revealLogo = document.querySelector('.reveal-logo');
