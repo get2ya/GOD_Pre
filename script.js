@@ -26,10 +26,9 @@ document.addEventListener('DOMContentLoaded', function() {
 
         const containerRect = pixiContainer.parentElement.getBoundingClientRect();
 
-        // [최적화] 모바일 해상도 제한 (최대 1.5배까지만)
-        // 아이폰 14 Pro (DPR 3) 등에서 메모리 폭발 방지
-        // 2배 → 1.5배로 낮춤 (눈으로 구분 불가, 메모리 대폭 절약)
-        const pixelRatio = Math.min(window.devicePixelRatio || 1, 1.5);
+        // [최적화] 모바일 해상도 1배 고정 (가장 확실한 메모리 절약)
+        // 아이폰 14 Pro (DPR 3) 등에서 메모리 폭발 완전 방지
+        const pixelRatio = 1;
 
         // Pixi Application 생성
         pixiApp = new PIXI.Application({
