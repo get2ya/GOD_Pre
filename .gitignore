@@ -1,0 +1,8 @@
+# 백업 폴더
+resource/backup/
+
+# Claude Code 설정
+.claude/
+
+# 시스템 파일
+nul
